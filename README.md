@@ -1,1 +1,1 @@
-Repository to compare living in Itals with living in Austria
+Repository to compare living in Italy with living in Austria
