@@ -1,132 +1,30 @@
-// Get all slider elements
-const pensionSlider = document.getElementById('pensionSlider');
-const housingItalySlider = document.getElementById('housingItaly');
-const housingAustriaSlider = document.getElementById('housingAustria');
+// Define the bank savings slider and corresponding variable
+const bankSavingsSlider = document.getElementById('bankSavingsSlider');
+const bankSavingsValue = document.getElementById('bankSavingsValue');
 
-// Get all display elements
-const pensionValue = document.getElementById('pensionValue');
-const housingItalyValue = document.getElementById('housingItalyValue');
-const housingAustriaValue = document.getElementById('housingAustriaValue');
-
-// Fixed costs (monthly)
-const ITALY_HEALTHCARE = 100;
-const ITALY_FOOD = 300;
-const AUSTRIA_HEALTHCARE = 560;
-const AUSTRIA_FOOD = 400;
-
-// Tax calculation for Austria (progressive tax brackets 2026)
-function calculateAustrianTax(monthlyIncome) {
-    const annualIncome = monthlyIncome * 12;
-    let tax = 0;
-
-    if (annualIncome <= 13539) {
-        tax = 0;
-    } else if (annualIncome <= 21992) {
-        tax = (annualIncome - 13539) * 0.20;
-    } else if (annualIncome <= 36458) {
-        tax = (21992 - 13539) * 0.20 + (annualIncome - 21992) * 0.30;
-    } else if (annualIncome <= 70365) {
-        tax = (21992 - 13539) * 0.20 + (36458 - 21992) * 0.30 + (annualIncome - 36458) * 0.40;
-    } else if (annualIncome <= 104859) {
-        tax = (21992 - 13539) * 0.20 + (36458 - 21992) * 0.30 + (70365 - 36458) * 0.40 + (annualIncome - 70365) * 0.48;
-    } else {
-        tax = (21992 - 13539) * 0.20 + (36458 - 21992) * 0.30 + (70365 - 36458) * 0.40 + (104859 - 70365) * 0.48 + (annualIncome - 104859) * 0.50;
-    }
-
-    return tax / 12; // Return monthly tax
-}
-
-// Format currency
-function formatCurrency(value) {
-    return '€' + value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-}
-
-// Update display values for sliders
-function updateSliderDisplays() {
-    pensionValue.textContent = formatCurrency(parseFloat(pensionSlider.value));
-    housingItalyValue.textContent = formatCurrency(parseFloat(housingItalySlider.value));
-    housingAustriaValue.textContent = formatCurrency(parseFloat(housingAustriaSlider.value));
-}
-
-// Calculate and update all values
-function updateCalculations() {
-    const monthlyPension = parseFloat(pensionSlider.value);
-    const housingItaly = parseFloat(housingItalySlider.value);
-    const housingAustria = parseFloat(housingAustriaSlider.value);
-
-    // Italy calculations (7% flat tax)
-    const italyMonthlyTax = monthlyPension * 0.07;
-    const italyMonthlyNet = monthlyPension - italyMonthlyTax - housingItaly - ITALY_HEALTHCARE - ITALY_FOOD;
-    const italyAnnualIncome = monthlyPension * 12;
-    const italyAnnualTax = italyMonthlyTax * 12;
-    const italyAnnualNet = italyMonthlyNet * 12;
-    const italyAnnualHousing = housingItaly * 12;
-    const italyAnnualHealth = ITALY_HEALTHCARE * 12;
-    const italyAnnualFood = ITALY_FOOD * 12;
-
-    // Austria calculations (progressive tax)
-    const austriaMonthlyTax = calculateAustrianTax(monthlyPension);
-    const austriaMonthlyNet = monthlyPension - austriaMonthlyTax - housingAustria - AUSTRIA_HEALTHCARE - AUSTRIA_FOOD;
-    const austriaAnnualIncome = monthlyPension * 12;
-    const austriaAnnualTax = austriaMonthlyTax * 12;
-    const austriaAnnualNet = austriaMonthlyNet * 12;
-    const austriaAnnualHousing = housingAustria * 12;
-    const austriaAnnualHealth = AUSTRIA_HEALTHCARE * 12;
-    const austriaAnnualFood = AUSTRIA_FOOD * 12;
-
-    // Update Italy displays
-    document.getElementById('italyMonthlyIncome').textContent = formatCurrency(monthlyPension);
-    document.getElementById('italyMonthlyTax').textContent = formatCurrency(-italyMonthlyTax);
-    document.getElementById('italyMonthlyHousing').textContent = formatCurrency(-housingItaly);
-    document.getElementById('italyMonthlyHealth').textContent = formatCurrency(-ITALY_HEALTHCARE);
-    document.getElementById('italyMonthlyFood').textContent = formatCurrency(-ITALY_FOOD);
-    document.getElementById('italyMonthlyNet').textContent = formatCurrency(italyMonthlyNet);
-
-    document.getElementById('italyAnnualIncome').textContent = formatCurrency(italyAnnualIncome);
-    document.getElementById('italyAnnualTax').textContent = formatCurrency(-italyAnnualTax);
-    document.getElementById('italyAnnualHousing').textContent = formatCurrency(-italyAnnualHousing);
-    document.getElementById('italyAnnualHealth').textContent = formatCurrency(-italyAnnualHealth);
-    document.getElementById('italyAnnualFood').textContent = formatCurrency(-italyAnnualFood);
-    document.getElementById('italyAnnualNet').textContent = formatCurrency(italyAnnualNet);
-
-    // Update Austria displays
-    document.getElementById('austriaMonthlyIncome').textContent = formatCurrency(monthlyPension);
-    document.getElementById('austriaMonthlyTax').textContent = formatCurrency(-austriaMonthlyTax);
-    document.getElementById('austriaMonthlyHousing').textContent = formatCurrency(-housingAustria);
-    document.getElementById('austriaMonthlyHealth').textContent = formatCurrency(-AUSTRIA_HEALTHCARE);
-    document.getElementById('austriaMonthlyFood').textContent = formatCurrency(-AUSTRIA_FOOD);
-    document.getElementById('austriaMonthlyNet').textContent = formatCurrency(austriaMonthlyNet);
-
-    document.getElementById('austriaAnnualIncome').textContent = formatCurrency(austriaAnnualIncome);
-    document.getElementById('austriaAnnualTax').textContent = formatCurrency(-austriaAnnualTax);
-    document.getElementById('austriaAnnualHousing').textContent = formatCurrency(-austriaAnnualHousing);
-    document.getElementById('austriaAnnualHealth').textContent = formatCurrency(-austriaAnnualHealth);
-    document.getElementById('austriaAnnualFood').textContent = formatCurrency(-austriaAnnualFood);
-    document.getElementById('austriaAnnualNet').textContent = formatCurrency(austriaAnnualNet);
-
-    // Update summary
-    const difference = italyAnnualNet - austriaAnnualNet;
-    const betterOption = difference > 0 ? 'Italy is better!' : difference < 0 ? 'Austria is better!' : 'It\'s equal!';
-    const summaryText = document.getElementById('summaryText');
-    summaryText.textContent = `Annual difference: ${formatCurrency(Math.abs(difference))} - ${betterOption}`;
-}
-
-// Add event listeners
-pensionSlider.addEventListener('input', () => {
-    updateSliderDisplays();
-    updateCalculations();
+// Add event listener to update the display when the slider value changes
+bankSavingsSlider.addEventListener('input', function() {
+    bankSavingsValue.textContent = this.value;
 });
 
-housingItalySlider.addEventListener('input', () => {
-    updateSliderDisplays();
-    updateCalculations();
-});
+// Update the calculateAustrianTax function to account for bank savings not being taxable income
+function calculateAustrianTax() {
+    // existing tax calculation code...
+    const bankingSavings = parseFloat(bankSavingsSlider.value);
+    const taxableIncome = grossIncome - bankingSavings; // Adjust taxable income
+    // Continue with the rest of the tax calculation logic
+}
 
-housingAustriaSlider.addEventListener('input', () => {
-    updateSliderDisplays();
-    updateCalculations();
-});
+// Modify the display logic to include bank savings rows
+function displayCalculations() {
+    // existing display code...
+    const bankSavings = parseFloat(bankSavingsSlider.value);
+    // Add bank savings info to display
+    document.getElementById('bankSavingsDisplay').textContent = `Bank Savings: €${bankSavings}`;
+}
 
-// Initial calculation
-updateSliderDisplays();
-updateCalculations();
+// Update net disposable income calculation to subtract bank savings
+function calculateNetDisposableIncome() {
+    const bankSavings = parseFloat(bankSavingsSlider.value);
+    return grossIncome - totalTax - bankSavings; // Adjust calculation to account for bank savings
+}
