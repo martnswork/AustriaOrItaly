@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Austria vs Italy - Financial Comparison</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🏠 Austria or Italy? Financial Comparison</h1>
+        <p class="subtitle">Compare your net disposable income between Puglia (Italy) and Austria</p>
+
+        <div class="controls">
+            <div class="slider-group">
+                <label for="pensionSlider">Monthly Pension Income: <span id="pensionValue">€2,500</span></label>
+                <input type="range" id="pensionSlider" min="1000" max="5000" value="2500" step="100">
+                <div class="slider-track"></div>
+            </div>
+
+            <div class="slider-group">
+                <label for="housingItaly">Monthly Housing Cost (Italy): <span id="housingItalyValue">€1,000</span></label>
+                <input type="range" id="housingItaly" min="500" max="2000" value="1000" step="50">
+                <div class="slider-track"></div>
+            </div>
+
+            <div class="slider-group">
+                <label for="housingAustria">Monthly Housing Cost (Austria): <span id="housingAustriaValue">€1,200</span></label>
+                <input type="range" id="housingAustria" min="800" max="2500" value="1200" step="50">
+                <div class="slider-track"></div>
+            </div>
+        </div>
+
+        <div class="comparison">
+            <div class="country italy">
+                <h2>🇮🇹 Puglia, Italy</h2>
+                <div class="breakdown">
+                    <h3>Monthly Breakdown</h3>
+                    <table>
+                        <tr>
+                            <td>Pension Income:</td>
+                            <td class="value" id="italyMonthlyIncome">€2,500.00</td>
+                        </tr>
+                        <tr>
+                            <td>Taxes (7% flat):</td>
+                            <td class="value negative" id="italyMonthlyTax">-€175.00</td>
+                        </tr>
+                        <tr>
+                            <td>Housing:</td>
+                            <td class="value negative" id="italyMonthlyHousing">-€1,000.00</td>
+                        </tr>
+                        <tr>
+                            <td>Healthcare:</td>
+                            <td class="value negative" id="italyMonthlyHealth">-€100.00</td>
+                        </tr>
+                        <tr>
+                            <td>Food:</td>
+                            <td class="value negative" id="italyMonthlyFood">-€300.00</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td><strong>Net Disposable:</strong></td>
+                            <td class="value" id="italyMonthlyNet"><strong>€0.00</strong></td>
+                        </tr>
+                    </table>
+
+                    <h3>Annual Breakdown</h3>
+                    <table>
+                        <tr>
+                            <td>Pension Income:</td>
+                            <td class="value" id="italyAnnualIncome">€30,000.00</td>
+                        </tr>
+                        <tr>
+                            <td>Taxes (7% flat):</td>
+                            <td class="value negative" id="italyAnnualTax">-€2,100.00</td>
+                        </tr>
+                        <tr>
+                            <td>Housing:</td>
+                            <td class="value negative" id="italyAnnualHousing">-€12,000.00</td>
+                        </tr>
+                        <tr>
+                            <td>Healthcare:</td>
+                            <td class="value negative" id="italyAnnualHealth">-€1,200.00</td>
+                        </tr>
+                        <tr>
+                            <td>Food:</td>
+                            <td class="value negative" id="italyAnnualFood">-€3,600.00</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td><strong>Net Disposable:</strong></td>
+                            <td class="value" id="italyAnnualNet"><strong>€0.00</strong></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="country austria">
+                <h2>🇦🇹 Austria (2111)</h2>
+                <div class="breakdown">
+                    <h3>Monthly Breakdown</h3>
+                    <table>
+                        <tr>
+                            <td>Pension Income:</td>
+                            <td class="value" id="austriaMonthlyIncome">€2,500.00</td>
+                        </tr>
+                        <tr>
+                            <td>Taxes (Progressive):</td>
+                            <td class="value negative" id="austriaMonthlyTax">-€0.00</td>
+                        </tr>
+                        <tr>
+                            <td>Housing:</td>
+                            <td class="value negative" id="austriaMonthlyHousing">-€1,200.00</td>
+                        </tr>
+                        <tr>
+                            <td>Healthcare:</td>
+                            <td class="value negative" id="austriaMonthlyHealth">-€560.00</td>
+                        </tr>
+                        <tr>
+                            <td>Food:</td>
+                            <td class="value negative" id="austriaMonthlyFood">-€400.00</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td><strong>Net Disposable:</strong></td>
+                            <td class="value" id="austriaMonthlyNet"><strong>€0.00</strong></td>
+                        </tr>
+                    </table>
+
+                    <h3>Annual Breakdown</h3>
+                    <table>
+                        <tr>
+                            <td>Pension Income:</td>
+                            <td class="value" id="austriaAnnualIncome">€30,000.00</td>
+                        </tr>
+                        <tr>
+                            <td>Taxes (Progressive):</td>
+                            <td class="value negative" id="austriaAnnualTax">-€0.00</td>
+                        </tr>
+                        <tr>
+                            <td>Housing:</td>
+                            <td class="value negative" id="austriaAnnualHousing">-€14,400.00</td>
+                        </tr>
+                        <tr>
+                            <td>Healthcare:</td>
+                            <td class="value negative" id="austriaAnnualHealth">-€6,720.00</td>
+                        </tr>
+                        <tr>
+                            <td>Food:</td>
+                            <td class="value negative" id="austriaAnnualFood">-€4,800.00</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td><strong>Net Disposable:</strong></td>
+                            <td class="value" id="austriaAnnualNet"><strong>€0.00</strong></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="summary">
+            <h3>Quick Comparison</h3>
+            <div class="summary-content">
+                <p id="summaryText">Annual difference: €0.00</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
