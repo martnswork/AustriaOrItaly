@@ -118,34 +118,19 @@ input[type="range"]::-moz-range-thumb:hover {
     border-radius: 10px;
     padding: 30px;
     background: #f8f9fa;
-}
-
-.country.italy {
-    border-left: 5px solid #009246;
-}
-
-.country.austria {
-    border-left: 5px solid #ed2939;
+    border: 2px solid #333;
 }
 
 h2 {
     font-size: 1.8em;
     margin-bottom: 25px;
-    color: #333;
-}
-
-.country.italy h2 {
-    color: #009246;
-}
-
-.country.austria h2 {
-    color: #ed2939;
+    color: #000;
 }
 
 h3 {
     font-size: 1.2em;
     margin: 20px 0 15px 0;
-    color: #555;
+    color: #333;
     border-bottom: 2px solid #ddd;
     padding-bottom: 10px;
 }
@@ -166,34 +151,27 @@ td {
 }
 
 td:first-child {
-    color: #666;
+    color: #333;
 }
 
 .value {
     text-align: right;
     font-weight: 600;
-    color: #009246;
-}
-
-.country.austria .value {
-    color: #ed2939;
 }
 
 .value.negative {
     color: #dc3545;
 }
 
-.total-row {
-    background: #e8f5e9;
-    border-top: 2px solid #009246;
-    border-bottom: 2px solid #009246;
-    font-size: 1.1em;
+.value.positive {
+    color: #28a745;
 }
 
-.country.austria .total-row {
-    background: #ffebee;
-    border-top: 2px solid #ed2939;
-    border-bottom: 2px solid #ed2939;
+.total-row {
+    background: #f0f0f0;
+    border-top: 2px solid #333;
+    border-bottom: 2px solid #333;
+    font-size: 1.1em;
 }
 
 .summary {
