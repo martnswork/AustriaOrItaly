@@ -1,8 +1,8 @@
 // ============================================
 // SUPABASE CONFIGURATION
 // ============================================
-const SUPABASE_URL = 'https://bsfksmuskdtybozosvrb.supabase.co'; // Replace with my Supabase URL
-const SUPABASE_ANON_KEY = 'sb_publishable_yu37ecrzy7cIBivbn8BjUA_2z94IIfG'; // Replaced with my publishable Key
+const SUPABASE_URL = 'YOUR_SUPABASE_URL_HERE'; // Replace with your Supabase URL
+const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY_HERE'; // Replace with your Anon Key
 
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
