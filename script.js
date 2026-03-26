@@ -4,6 +4,7 @@
 const SUPABASE_URL = 'https://bsfksmuskdtyb.supabase.co'; // Replace with your full URL
 const SUPABASE_ANON_KEY = 'sb_publishable_yu37ecrzy7cIBivbn8BjUA_2z94IIfG'; // Replace with your complete key
 
+
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
     auth: {
         persistSession: false
