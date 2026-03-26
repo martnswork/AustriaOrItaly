@@ -1,3 +1,25 @@
+// ============================================
+// SUPABASE CONFIGURATION
+// ============================================
+const SUPABASE_URL = 'https://bsfksmuskdtybozosvrb.supabase.co'; // Replace with my Supabase URL
+const SUPABASE_ANON_KEY = 'sb_publishable_yu37ecrzy7cIBivbn8BjUA_2z94IIfG'; // Replaced with my publishable Key
+
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// Get or create device ID
+function getDeviceId() {
+    let deviceId = localStorage.getItem('deviceId');
+    if (!deviceId) {
+        deviceId = 'device_' + Math.random().toString(36).substr(2, 9);
+        localStorage.setItem('deviceId', deviceId);
+    }
+    return deviceId;
+}
+
+// ============================================
+// DOM ELEMENTS
+// ============================================
+
 // Get all slider elements
 const pensionSlider = document.getElementById('pensionSlider');
 const housingItalySlider = document.getElementById('housingItaly');
@@ -15,6 +37,10 @@ const ITALY_HEALTHCARE = 100;
 const ITALY_FOOD = 300;
 const AUSTRIA_HEALTHCARE = 560;
 const AUSTRIA_FOOD = 400;
+
+// ============================================
+// TAX CALCULATION
+// ============================================
 
 // Tax calculation for Austria (progressive tax brackets 2026)
 function calculateAustrianTax(monthlyIncome) {
@@ -38,6 +64,10 @@ function calculateAustrianTax(monthlyIncome) {
     return tax / 12; // Return monthly tax
 }
 
+// ============================================
+// UTILITY FUNCTIONS
+// ============================================
+
 // Format currency
 function formatCurrency(value) {
     return '€' + value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -55,6 +85,10 @@ function colorizeTotal(elementId, value) {
     }
 }
 
+// ============================================
+// DISPLAY UPDATES
+// ============================================
+
 // Update display values for sliders
 function updateSliderDisplays() {
     pensionValue.textContent = formatCurrency(parseFloat(pensionSlider.value));
@@ -62,6 +96,10 @@ function updateSliderDisplays() {
     housingAustriaValue.textContent = formatCurrency(parseFloat(housingAustriaSlider.value));
     bankSavingsValue.textContent = formatCurrency(parseFloat(bankSavingsSlider.value));
 }
+
+// ============================================
+// CALCULATIONS
+// ============================================
 
 // Calculate and update all values
 function updateCalculations() {
@@ -147,27 +185,108 @@ function updateCalculations() {
     summaryText.textContent = `Annual difference: ${formatCurrency(Math.abs(difference))} - ${betterOption}`;
 }
 
-// Add event listeners
+// ============================================
+// SUPABASE SAVE/LOAD
+// ============================================
+
+// Save values to Supabase
+async function saveToSupabase() {
+    const deviceId = getDeviceId();
+    
+    const data = {
+        device_id: deviceId,
+        pension_income: parseFloat(pensionSlider.value),
+        housing_italy: parseFloat(housingItalySlider.value),
+        housing_austria: parseFloat(housingAustriaSlider.value),
+        bank_savings: parseFloat(bankSavingsSlider.value),
+        updated_at: new Date().toISOString()
+    };
+
+    try {
+        // Try to update existing record
+        const { error: updateError } = await supabase
+            .from('user_settings')
+            .update(data)
+            .eq('device_id', deviceId);
+
+        if (updateError) {
+            // If update fails, insert new record
+            await supabase
+                .from('user_settings')
+                .insert([data]);
+        }
+    } catch (error) {
+        console.log('Save note: This feature requires Supabase to be configured.');
+    }
+}
+
+// Load values from Supabase
+async function loadFromSupabase() {
+    const deviceId = getDeviceId();
+
+    try {
+        const { data, error } = await supabase
+            .from('user_settings')
+            .select('*')
+            .eq('device_id', deviceId)
+            .single();
+
+        if (error) {
+            console.log('No saved settings found. Using defaults.');
+            return;
+        }
+
+        if (data) {
+            // Restore values
+            pensionSlider.value = data.pension_income;
+            housingItalySlider.value = data.housing_italy;
+            housingAustriaSlider.value = data.housing_austria;
+            bankSavingsSlider.value = data.bank_savings;
+
+            // Update displays
+            updateSliderDisplays();
+            updateCalculations();
+            console.log('✅ Settings loaded from Supabase!');
+        }
+    } catch (error) {
+        console.log('Note: Supabase connection not set up yet.');
+    }
+}
+
+// ============================================
+// EVENT LISTENERS
+// ============================================
+
 pensionSlider.addEventListener('input', () => {
     updateSliderDisplays();
     updateCalculations();
+    saveToSupabase();
 });
 
 housingItalySlider.addEventListener('input', () => {
     updateSliderDisplays();
     updateCalculations();
+    saveToSupabase();
 });
 
 housingAustriaSlider.addEventListener('input', () => {
     updateSliderDisplays();
     updateCalculations();
+    saveToSupabase();
 });
 
 bankSavingsSlider.addEventListener('input', () => {
     updateSliderDisplays();
     updateCalculations();
+    saveToSupabase();
 });
 
-// Initial calculation
-updateSliderDisplays();
-updateCalculations();
+// ============================================
+// INITIALIZATION
+// ============================================
+
+// Load saved settings on page load
+loadFromSupabase().then(() => {
+    updateSliderDisplays();
+    updateCalculations();
+});
