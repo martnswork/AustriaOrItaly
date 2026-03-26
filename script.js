@@ -21,31 +21,6 @@ function getDeviceId() {
     return deviceId;
 }
 
-async function ensureAnonSession() {
-  // Check if there is already a session
-  const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-  if (sessionError) console.warn("getSession error:", sessionError);
-
-  // If not, sign in anonymously
-  if (!session) {
-    const { data, error } = await supabase.auth.signInAnonymously();
-    if (error) {
-      console.error("Anonymous sign-in failed:", error);
-      return null;
-    }
-    console.log("Anonymous user signed in:", data.user?.id);
-    return data.session;
-  }
-
-  return session;
-}
-
-(async () => {
-  await ensureAnonSession();
-
-  // Now it’s safe to call load/save functions that hit RLS-protected tables
-  await loadFromSupabase();
-})();
 
 // ============================================
 // DOM ELEMENTS
