@@ -43,6 +43,18 @@ function formatCurrency(value) {
     return '€' + value.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 }
 
+// Color total based on positive/negative
+function colorizeTotal(elementId, value) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        if (value < 0) {
+            element.style.color = '#dc3545'; // red for negative
+        } else {
+            element.style.color = '#28a745'; // green for positive
+        }
+    }
+}
+
 // Update display values for sliders
 function updateSliderDisplays() {
     pensionValue.textContent = formatCurrency(parseFloat(pensionSlider.value));
@@ -95,6 +107,7 @@ function updateCalculations() {
     document.getElementById('italyMonthlyNetPension').textContent = formatCurrency(italyMonthlyNetPension);
     document.getElementById('italyMonthlySavings').textContent = formatCurrency(bankSavings);
     document.getElementById('italyMonthlyTotal').textContent = formatCurrency(italyMonthlyTotal);
+    colorizeTotal('italyMonthlyTotal', italyMonthlyTotal);
 
     document.getElementById('italyAnnualIncome').textContent = formatCurrency(italyAnnualIncome);
     document.getElementById('italyAnnualTax').textContent = formatCurrency(-italyAnnualTax);
@@ -104,6 +117,7 @@ function updateCalculations() {
     document.getElementById('italyAnnualNetPension').textContent = formatCurrency(italyAnnualNetPension);
     document.getElementById('italyAnnualSavings').textContent = formatCurrency(italyAnnualSavings);
     document.getElementById('italyAnnualTotal').textContent = formatCurrency(italyAnnualTotal);
+    colorizeTotal('italyAnnualTotal', italyAnnualTotal);
 
     // Update Austria displays
     document.getElementById('austriaMonthlyIncome').textContent = formatCurrency(monthlyPension);
@@ -114,6 +128,7 @@ function updateCalculations() {
     document.getElementById('austriaMonthlyNetPension').textContent = formatCurrency(austriaMonthlyNetPension);
     document.getElementById('austriaMonthlySavings').textContent = formatCurrency(bankSavings);
     document.getElementById('austriaMonthlyTotal').textContent = formatCurrency(austriaMonthlyTotal);
+    colorizeTotal('austriaMonthlyTotal', austriaMonthlyTotal);
 
     document.getElementById('austriaAnnualIncome').textContent = formatCurrency(austriaAnnualIncome);
     document.getElementById('austriaAnnualTax').textContent = formatCurrency(-austriaAnnualTax);
@@ -123,6 +138,7 @@ function updateCalculations() {
     document.getElementById('austriaAnnualNetPension').textContent = formatCurrency(austriaAnnualNetPension);
     document.getElementById('austriaAnnualSavings').textContent = formatCurrency(austriaAnnualSavings);
     document.getElementById('austriaAnnualTotal').textContent = formatCurrency(austriaAnnualTotal);
+    colorizeTotal('austriaAnnualTotal', austriaAnnualTotal);
 
     // Update summary - comparing TOTAL available to spend
     const difference = italyAnnualTotal - austriaAnnualTotal;
