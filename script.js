@@ -1,10 +1,14 @@
 // ============================================
 // SUPABASE CONFIGURATION
 // ============================================
-const SUPABASE_URL = 'https://bsfksmuskdtybozosvrb.supabase.co'; // Replace with your Supabase URL
-const SUPABASE_ANON_KEY = 'sb_publishable_yu37ecrzy7cIBivbn8BjUA_2z94IIfG'; // Replace with your Anon Key
+const SUPABASE_URL = 'https://bsfksmuskdtyb.supabase.co'; // Replace with your full URL
+const SUPABASE_ANON_KEY = 'YOUR_FULL_ANON_KEY_HERE'; // Replace with your complete key
 
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    auth: {
+        persistSession: false
+    }
+});
 
 // Get or create device ID
 function getDeviceId() {
@@ -15,7 +19,6 @@ function getDeviceId() {
     }
     return deviceId;
 }
-
 // ============================================
 // DOM ELEMENTS
 // ============================================
@@ -198,8 +201,7 @@ async function saveToSupabase() {
         pension_income: parseFloat(pensionSlider.value),
         housing_italy: parseFloat(housingItalySlider.value),
         housing_austria: parseFloat(housingAustriaSlider.value),
-        bank_savings: parseFloat(bankSavingsSlider.value),
-        updated_at: new Date().toISOString()
+        bank_savings: parseFloat(bankSavingsSlider.value)
     };
 
     try {
@@ -209,14 +211,20 @@ async function saveToSupabase() {
             .update(data)
             .eq('device_id', deviceId);
 
-        if (updateError) {
-            // If update fails, insert new record
-            await supabase
+        if (updateError && updateError.code === 'PGRST116') {
+            // If no record exists, insert new one
+            const { error: insertError } = await supabase
                 .from('user_settings')
                 .insert([data]);
+            
+            if (!insertError) {
+                console.log('✅ Settings saved to Supabase!');
+            }
+        } else if (!updateError) {
+            console.log('✅ Settings updated in Supabase!');
         }
     } catch (error) {
-        console.log('Save note: This feature requires Supabase to be configured.');
+        console.log('Save error:', error.message);
     }
 }
 
@@ -229,10 +237,10 @@ async function loadFromSupabase() {
             .from('user_settings')
             .select('*')
             .eq('device_id', deviceId)
-            .single();
+            .maybeSingle(); // Use maybeSingle instead of single
 
         if (error) {
-            console.log('No saved settings found. Using defaults.');
+            console.log('No saved settings found yet.');
             return;
         }
 
@@ -249,7 +257,7 @@ async function loadFromSupabase() {
             console.log('✅ Settings loaded from Supabase!');
         }
     } catch (error) {
-        console.log('Note: Supabase connection not set up yet.');
+        console.log('Load error:', error.message);
     }
 }
 
